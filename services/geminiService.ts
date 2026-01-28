@@ -2,7 +2,8 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { EquipmentItem } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+// Always use process.env.API_KEY directly for initialization
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const getSmartRecommendations = async (taskDescription: string, inventory: EquipmentItem[]) => {
   try {
