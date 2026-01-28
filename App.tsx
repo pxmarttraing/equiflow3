@@ -96,6 +96,24 @@ const App: React.FC = () => {
     }
   };
 
+  const handleImportFullData = (dataStr: string) => {
+    try {
+      const decoded = JSON.parse(decodeURIComponent(escape(atob(dataStr))));
+      if (decoded.users && decoded.items && decoded.reservations && decoded.categories) {
+        setUsers(decoded.users);
+        setItems(decoded.items);
+        setReservations(decoded.reservations);
+        setCategories(decoded.categories);
+        addToast('數據導入成功！正在重新載入...', 'success');
+        setTimeout(() => window.location.reload(), 1000);
+      } else {
+        throw new Error('格式不正確');
+      }
+    } catch (e) {
+      addToast('導入失敗：無效的代碼', 'error');
+    }
+  };
+
   if (!isLoggedIn || !currentUser) {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center p-6">
@@ -174,6 +192,7 @@ const App: React.FC = () => {
             addToast('密碼已重設為 1234');
           }}
           onCancelReservation={setCancelTargetId}
+          onImportFullData={handleImportFullData}
         />
       )}
 
